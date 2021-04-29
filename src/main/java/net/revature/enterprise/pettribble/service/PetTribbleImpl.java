@@ -1,30 +1,26 @@
-package net.revature.enterprise.petrock.service;
+package net.revature.enterprise.pettribble.service;
 
-import net.revature.enterprise.petrock.model.PetRock;
+import net.revature.enterprise.pettribble.model.PetTribble;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class PetRockImpl implements PetRockDao {
+public class PetTribbleImpl implements PetTribbleDao {
 
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
-    public static final String TABLE_NAME = "rock";
-    public static Integer id;
-
-
+    public static final String TABLE_NAME = "tribble";
     /*
-    Query to retrieve Pet Rock by id
+    Query to retrieve Pet Tribble by id
      */
     public static final String QUERY_SEARCH_ID = "SELECT " +
             COLUMN_ID + ", " +
             COLUMN_NAME + " FROM " +
             TABLE_NAME + " WHERE " +
             COLUMN_ID + " = ?";
-
     /*
-    Query to retrieve all pet rocks by name
+    Query to retrieve all pet tribble by name
      */
     public static final String QUERY_SEARCH_NAME = "SELECT " +
             COLUMN_ID + ", " +
@@ -32,50 +28,47 @@ public class PetRockImpl implements PetRockDao {
             TABLE_NAME + " WHERE " +
             COLUMN_NAME + " = ? ORDER BY " +
             COLUMN_NAME;
-
-    /*
-    GET ALL PET ROCKS
-    */
-
-    public static final String QUERY_GET_ALL_PET_ROCKS = "SELECT " +
+    public static final String QUERY_GET_ALL_PET_TRIBBLES = "SELECT " +
             COLUMN_ID + ", " +
             COLUMN_NAME + " FROM " +
             TABLE_NAME;
 
     /*
-    QUERY TO DELETE BY ID
-     */
-
+    GET ALL PET TRIBBLE
+    */
     public static final String QUERY_DELETE_BY_ID = "DELETE FROM " +
             TABLE_NAME + " WHERE " +
             COLUMN_ID + " = ?";
 
     /*
-    CREATE A NEW PET ROCK
+    QUERY TO DELETE BY ID
      */
-
     public static final String QUERY_CREATE = "INSERT INTO " +
             TABLE_NAME + " (" +
             COLUMN_NAME + ") VALUES (?)";
 
+    /*
+    CREATE A NEW PET tribble
+     */
     public final static Scanner scanner = new Scanner(System.in);
+    public static Integer id;
 
     @Override
-    public PetRock getById(int id, Connection connection) {
+    public PetTribble getById(int id, Connection connection) {
         try {
-            PetRock petRock = new PetRock();
+            PetTribble petTribble = new PetTribble();
             PreparedStatement preparedStatement = connection.prepareStatement(QUERY_SEARCH_ID);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    petRock.setId(resultSet.getInt(1));
-                    petRock.setName(resultSet.getString(2));
+                    petTribble.setId(resultSet.getInt(1));
+                    petTribble.setName(resultSet.getString(2));
                 }
                 resultSet.close();
             }
             preparedStatement.close();
-            return petRock;
+            return petTribble;
         } catch (SQLException e) {
             System.out.println("There was a problem with your transaction");
             return null;
@@ -86,23 +79,23 @@ public class PetRockImpl implements PetRockDao {
     }
 
     @Override
-    public ArrayList<PetRock> getByName(Connection connection, String name) {
+    public ArrayList<PetTribble> getByName(Connection connection, String name) {
         try {
-            ArrayList<PetRock> petRocks = new ArrayList<>();
+            ArrayList<PetTribble> petTribbles = new ArrayList<>();
             PreparedStatement preparedStatement = connection.prepareStatement(QUERY_SEARCH_NAME);
             preparedStatement.setString(1, name.toLowerCase().trim());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    PetRock petRock = new PetRock();
-                    petRock.setId(resultSet.getInt(1));
-                    petRock.setName(resultSet.getString(2));
-                    petRocks.add(petRock);
+                    PetTribble petTribble = new PetTribble();
+                    petTribble.setId(resultSet.getInt(1));
+                    petTribble.setName(resultSet.getString(2));
+                    petTribbles.add(petTribble);
                 }
                 resultSet.close();
             }
             preparedStatement.close();
-            return petRocks;
+            return petTribbles;
         } catch (SQLException e) {
             System.out.println("Name does not exist or is no longer in the system");
         }
@@ -110,22 +103,22 @@ public class PetRockImpl implements PetRockDao {
     }
 
     @Override
-    public ArrayList<PetRock> getAllPetRocks(Connection connection) {
+    public ArrayList<PetTribble> getAllPetTribbles(Connection connection) {
         try {
-            ArrayList<PetRock> petRocks = new ArrayList<>();
-            PreparedStatement preparedStatement = connection.prepareStatement(QUERY_GET_ALL_PET_ROCKS);
+            ArrayList<PetTribble> petTribbles = new ArrayList<>();
+            PreparedStatement preparedStatement = connection.prepareStatement(QUERY_GET_ALL_PET_TRIBBLES);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    PetRock petRock = new PetRock();
-                    petRock.setId(resultSet.getInt(1));
-                    petRock.setName(resultSet.getString(2));
-                    petRocks.add(petRock);
+                    PetTribble petTribble = new PetTribble();
+                    petTribble.setId(resultSet.getInt(1));
+                    petTribble.setName(resultSet.getString(2));
+                    petTribbles.add(petTribble);
                 }
                 resultSet.close();
             }
             preparedStatement.close();
-            return petRocks;
+            return petTribbles;
         } catch (SQLException e) {
             return new ArrayList<>();
         }
@@ -161,7 +154,7 @@ public class PetRockImpl implements PetRockDao {
     }
 
     @Override
-    public PetRock createPetRock(Connection connection, String name) {
+    public PetTribble createPetTribble(Connection connection, String name) {
         try {
             while (true) {
                 name = name.trim();
@@ -181,18 +174,18 @@ public class PetRockImpl implements PetRockDao {
                 e.printStackTrace();
             }
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            PetRock petRock = new PetRock();
+            PetTribble petTribble = new PetTribble();
             if (resultSet.next()) {
-                petRock = getById(resultSet.getInt(1), connection);
+                petTribble = getById(resultSet.getInt(1), connection);
             }
 
             if (result != 0) {
                 System.out.println("Entry was successful");
                 preparedStatement.close();
-                return petRock;
+                return petTribble;
             } else {
                 System.out.println("ID #: " + id + " does not exist or is no longer available.");
-                return new PetRock();
+                return new PetTribble();
             }
         } catch (SQLException e) {
             System.out.println("Sorry, unable to create the query due to syntax.");

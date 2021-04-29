@@ -1,4 +1,4 @@
-package net.revature.enterprise.petrock.model;
+package net.revature.enterprise.pettribble.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PetRock {
+public class PetTribble {
     int id;
     String name;
 }
