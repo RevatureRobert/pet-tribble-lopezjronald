@@ -11,4 +11,10 @@ public interface PetRockDao {
 
     ArrayList<PetRock> getByName(Connection connection, String name);
 
+    ArrayList<PetRock> getAllPetRocks(Connection connection);
+
+    int deleteById(Connection connection, int id);
+
+    PetRock createPetRock(Connection connection, String name);
+
 }
